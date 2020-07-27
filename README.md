@@ -13,7 +13,7 @@
 
 |번호|task|완료여부/날짜|
 |:-:|-|:-:|
-|1|초기 세팅|X|
+|1|초기 세팅|O/07.28|
 |2|데이터베이스 구축(+모델링)|X|
 |3|판례, 트윗 API 테스크 코드 작성 + 구현|X|
 |4|인증 구현|X|
@@ -24,6 +24,8 @@
 ## Commit Convention
 
 - branch: master, develop, feat, release
+- init:
 - feat:
 - fix:
 - refactor:
+- README:
