@@ -5,20 +5,26 @@
   "repository": "https://github.com/MaxKim-J/supreme-court-API",
   "author": "Max Kim",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "start": "ts-node src",
+    "start": "NODE_ENV=dev nodemon --exec 'ts-node' src",
+    "start:prod": "NODE_ENV=prod nodemon --exec 'ts-node' src",
     "kill": "kill -9 $(lsof -t -i:3000)",
     "test": "NODE_ENV=test jest src"
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.7",
     "@types/morgan": "^1.9.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "pg": "^8.3.0",
+    "typeorm": "^0.2.25"
   },
   "devDependencies": {
     "@types/node": "^14.0.26",

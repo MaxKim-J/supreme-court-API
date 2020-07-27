@@ -1,13 +1,17 @@
 import express, {Express} from "express"
 import loaders from "./loaders"
+class App {
+  private app: Express
+  constructor() {
+    this.app = express()
+  }
 
-const app:Express = express();
+  async bootstrap() {
+    await loaders(this.app)
+    this.app.listen(this.app.get("port"), () => {
+      console.log(`Server is On ${this.app.get("port")}`)
+    });
+  }
+}
 
-const startApp = async () => {
-  await loaders(app);
-  app.listen(3000, () => {
-    console.log("server start");
-  });
-};
-
-export default startApp;
+export default App;

@@ -110,6 +110,7 @@ typings/
 
 # Next.js build output
 .next
+ormconfig.json
 
 # Nuxt.js build / generate output
 .nuxt
