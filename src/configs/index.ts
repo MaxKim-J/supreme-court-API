@@ -3,10 +3,10 @@ import dotenv from 'dotenv'
 let path:string = ''
 
 switch (process.env.NODE_ENV) {
-  case 'prod':
+  case 'production':
     path = `${__dirname}/env/prod.env`
     break
-  case 'dev':
+  case 'development':
     path = `${__dirname}/env/dev.env`
     break
   default:

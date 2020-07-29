@@ -1,5 +1,5 @@
-import { createConnection } from "typeorm";
+import { createConnection } from 'typeorm'
 
-const dbLoader = () => createConnection();
+const dbLoader = () => createConnection()
 
 export default dbLoader

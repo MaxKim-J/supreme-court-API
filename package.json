@@ -5,11 +5,13 @@
   "repository": "https://github.com/MaxKim-J/supreme-court-API",
   "author": "Max Kim",
   "license": "MIT",
-  "type": "module",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon --exec 'ts-node' src",
-    "start:prod": "NODE_ENV=prod nodemon --exec 'ts-node' src",
-    "kill": "kill -9 $(lsof -t -i:3000)",
+    "start:dev": "NODE_ENV=development nodemon --exec 'ts-node' src",
+    "start:prod": "NODE_ENV=production nodemon --exec 'ts-node' src",
+    "build:dev": "rimraf ./dist && webpack --env.NODE_ENV=development",
+    "build:prod": "rimraf ./dist && webpack --env.NODE_ENV=production ", 
+    "kill:dev": "kill -9 $(lsof -t -i:3000)",
+    "kill:prod": "kill -9 $(lsof -t -i:2500)",
     "test": "NODE_ENV=test jest src"
   },
   "dependencies": {
@@ -27,15 +29,25 @@
     "typeorm": "^0.2.25"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
     "@types/node": "^14.0.26",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
+    "babel-loader": "^8.1.0",
     "eslint": "^7.5.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "jest": "^26.1.0",
+    "rimraf": "^3.0.2",
     "supertest": "^4.0.2",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-node-externals": "^2.5.0"
   }
 }
