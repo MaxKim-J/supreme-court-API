@@ -1,14 +1,24 @@
-import app from '@/app'
-import request from 'supertest'
-import dbLoader from '@/models'
+import request, { Response } from 'supertest'
+import express, { Express } from 'express'
+import loaders from '../../loaders'
 
+// TODO : 공통 로직을 test config로 분리하기
 describe('GET /precedent는', () => {
-  beforeEach(async () => { await dbLoader() })
-  test('precedent 반환', async (done) => {
-    const response = request(app).get('/precedent')
-    console.log(response)
-    done()
+  let app:Express
+  let res:Response
+  beforeAll(async () => {
+    app = express()
+    await loaders(app)
+    res = await request(app).get('/precedent')
+  })
+  describe('성공시', () => {
+    it('상태코드 200 반환', async (done) => {
+      expect(res.status).toBe(200)
+      done()
+    })
+    it('문자열 반환', async (done) => {
+      expect(res.body).toBe('precedent API')
+      done()
+    })
   })
 })
-
-export default 'ss'
