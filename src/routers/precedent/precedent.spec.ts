@@ -1,6 +1,5 @@
 import { Response } from 'supertest'
 import { Express } from 'express'
-import { Precedent } from '../../@types/supreme-court-api/precedent.d'
 import { mockGetResponse, loadApp } from '../../utils/testHelper'
 
 describe('GET /precedent', () => {
@@ -58,7 +57,6 @@ describe('GET /precedent', () => {
       it('5개의 precedent로 이루어진 precedent[]를 반환한다.', async (done) => {
         res = await mockGetResponse(app, '/precedent/?page=2')
         expect(res.body.length).toBe(5)
-        expect(typeof res.body).toBe('Array')
         done()
       })
     })
