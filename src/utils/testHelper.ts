@@ -18,6 +18,6 @@ export const mockPostResponse = async (
   url:string,
   body:Precedent[] | any,
 ):Promise<Response> => {
-  const res:Response = await (await request(app).post(url).send(body))
+  const res:Response = await request(app).post(url).send(body)
   return res
 }

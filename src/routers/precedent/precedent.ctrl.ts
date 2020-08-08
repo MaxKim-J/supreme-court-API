@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import Precedent from '@/models/entities/precedent'
 import PrecedentModels from '../../models/precedentModels'
 import pagingHelper from '../../utils/pagingHelper'
 
@@ -29,6 +30,23 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
   return res.status(200).json({ counts, precedents })
 }
 
+const postPrecedents = async (req:Request, res:Response, next:NextFunction) => {
+  const { precedents } = req.body
+  if (!precedents) { return res.status(400).end() }
+  const promises = precedents.map((
+    precedent:Precedent,
+  ) => precedentModels.createPrecedent(precedent))
+
+  const result = await Promise.all(promises)
+  const counts = result.length
+  // TODO 판례요지 문자별 파싱 로직
+  // const newTweetCounts = 0
+  // if (isTweetUpdate) {}
+
+  return res.status(201).json({ counts, result })
+}
+
 export default {
   getPrecedents,
+  postPrecedents,
 }
