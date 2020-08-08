@@ -68,7 +68,7 @@ describe('GET /precedent', () => {
     describe('요청 실패시', () => {
       it('page가 정수가 아닐 경우 400을 반환한다.', async (done) => {
         res = await mockGetResponse(app, '/precedent/?page=some')
-        expect(res.status).toBe(409)
+        expect(res.status).toBe(400)
         done()
       })
     })

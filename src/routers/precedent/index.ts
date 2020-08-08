@@ -3,6 +3,6 @@ import ctrl from './precedent.ctrl'
 
 const router = express.Router()
 
-router.get('/', ctrl.getAllPrecedents)
+router.get('/', ctrl.getPrecedents)
 
 export default router
