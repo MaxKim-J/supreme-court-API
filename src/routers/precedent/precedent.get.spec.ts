@@ -17,7 +17,12 @@ describe('GET /precedent', () => {
       })
       it('Precedent 객체로 이루어진 배열을 반환한다.', async (done) => {
         res = await mockGetResponse(app, '/precedent')
-        expect(Array.isArray(res.body)).toBe(true)
+        expect(Array.isArray(res.body.precedents)).toBe(true)
+        done()
+      })
+      it('precedents 배열의 개수를 반환한다.', async (done) => {
+        res = await mockGetResponse(app, '/precedent')
+        expect(res.body.counts).toBeGreaterThanOrEqual(0)
         done()
       })
     })
@@ -32,14 +37,23 @@ describe('GET /precedent', () => {
       })
       it('Precedent 객체로 이루어진 배열을 반환한다.', async (done) => {
         res = await mockGetResponse(app, '/precedent')
-        expect(Array.isArray(res.body)).toBe(true)
+        expect(Array.isArray(res.body.precedents)).toBe(true)
         done()
       })
       it('type에 맞는 Precedent만 가져온다.', async (done) => {
-        res = await mockGetResponse(app, '/precedent?type=criminal')
-        res.body.forEach((elem:PrecedentInstance) => {
+        const criminalRes = await mockGetResponse(app, '/precedent?type=criminal')
+        const civilRes = await mockGetResponse(app, '/precedent?type=civil')
+        criminalRes.body.precedents.forEach((elem:PrecedentInstance) => {
           expect(elem.type).toBe('criminal')
         })
+        civilRes.body.precedents.forEach((elem:PrecedentInstance) => {
+          expect(elem.type).toBe('civil')
+        })
+        done()
+      })
+      it('precedents 배열의 개수를 반환한다.', async (done) => {
+        res = await mockGetResponse(app, '/precedent')
+        expect(res.body.counts).toBeGreaterThanOrEqual(0)
         done()
       })
     })
@@ -61,7 +75,12 @@ describe('GET /precedent', () => {
       })
       it('5개의 precedent객체를 포함한 배열을 반환한다.', async (done) => {
         res = await mockGetResponse(app, '/precedent?page=1')
-        expect(res.body.length).toBe(5)
+        expect(Array.isArray(res.body.precedents)).toBe(true)
+        done()
+      })
+      it('precedents 배열의 개수를 반환하며 값은 항상 5이다.', async (done) => {
+        res = await mockGetResponse(app, '/precedent?page=1')
+        expect(res.body.counts).toBe(5)
         done()
       })
     })
