@@ -3,13 +3,8 @@ import { Express } from 'express'
 import { mockPostResponse, loadApp } from '../../utils/testHelper'
 
 const newProperPrecedent = {
-  name: '판례이름',
+  name: '판례제목',
   content: '판례내용',
-  url: '유알엘',
-  type: '타입',
-}
-const newWrongPrecedent = {
-  name: '판례이름',
   url: '유알엘',
   type: '타입',
 }
@@ -21,7 +16,11 @@ const properNotTweetUpdateBody = {
   isTweetUpdate: false,
   precedents: [newProperPrecedent],
 }
-const uncompletedBody = {
+const bodyWithoutIsTweetUpdate = {
+  precedents: [newProperPrecedent],
+}
+
+const bodyWithoutPrecedents = {
   precedents: [newProperPrecedent],
 }
 
@@ -35,51 +34,37 @@ describe('POST /precedent', () => {
   describe('/precedent', () => {
     describe('요청 성공시', () => {
       it('상태코드 201을 반환한다.', async (done) => {
-        res = await mockPostResponse(app, '/precedent', [newProperPrecedent])
+        res = await mockPostResponse(app, '/precedent', properTweetUpdateBody)
         expect(res.status).toBe(201)
         done()
       })
-      it('생성된 Precedent 객체를 반환한다.', async (done) => {
-        res = await mockPostResponse(app, '/precedent', [newProperPrecedent])
-        expect(res.body).toBe(true)
+      it('생성된 Precedent 객체들의 개수를 반환한다.', async (done) => {
+        res = await mockPostResponse(app, '/precedent', properTweetUpdateBody)
+        expect(res.body.newPrecedentsCount).toBeGreaterThanOrEqual(0)
         done()
       })
-      it('tweet 데이터베이스를 업데이트하고 tweet:true를 반환한다.', async (done) => {
-        res = await mockPostResponse(app, '/precedent', [newProperPrecedent])
-        expect(res.body).toBe(true)
+      it('생성된 Precedent 객체들을 배열로 반환한다.', async (done) => {
+        res = await mockPostResponse(app, '/precedent', properTweetUpdateBody)
+        expect(Array.isArray(res.body.precedents)).toBe(true)
+        done()
+      })
+      it('isTweetUpdate가 true일 경우 생성된 Tweet개수는 0 이상이다.', async (done) => {
+        res = await mockPostResponse(app, '/precedent', properTweetUpdateBody)
+        expect(res.body.newTweetsCount).toBeGreaterThanOrEqual(0)
+        done()
+      })
+      it('isTweetUpdate가 false일 경우 생성된 Tweet개수는 0 이다.', async (done) => {
+        res = await mockPostResponse(app, '/precedent', properNotTweetUpdateBody)
+        expect(res.body.newTweetsCount).toBe(0)
         done()
       })
     })
     describe('요청 실패시', () => {
-      it('isTweetUpdate가 빠지면 400을 반환한다.', async (done) => {
-        res = await mockPostResponse(app, '/precedent', [newWrongPrecedent])
-        expect(res.status).toBe(400)
-        done()
-      })
-    })
-  })
-  describe('/precedent?tweet=false', () => {
-    describe('요청 성공시', () => {
-      it('상태코드 201을 반환한다.', async (done) => {
-        res = await mockPostResponse(app, '/precedent', [newProperPrecedent])
-        expect(res.status).toBe(201)
-        done()
-      })
-      it('생성된 Precedent 객체를 반환한다.', async (done) => {
-        res = await mockPostResponse(app, '/precedent', [newProperPrecedent])
-        expect(res.body).toBe(true)
-        done()
-      })
-      it('tweet 데이터베이스를 업데이트하지 않는다.', async (done) => {
-        res = await mockPostResponse(app, '/precedent', [newProperPrecedent])
-        expect(res.body).toBe(true)
-        done()
-      })
-    })
-    describe('요청 실패시', () => {
-      it('tweet이 true, false가 아닐 경우 400을 반환한다.', async (done) => {
-        res = await mockPostResponse(app, '/precedent', [newProperPrecedent])
-        expect(res.status).toBe(400)
+      it('isTweetUpdate나 precedents중 하나라도 없을 경우 400을 반환한다.', async (done) => {
+        const resWithoutIsTweetUpdate = await mockPostResponse(app, '/precedent', bodyWithoutIsTweetUpdate)
+        const resWithoutPrecedents = await mockPostResponse(app, '/precedent', bodyWithoutPrecedents)
+        expect(resWithoutIsTweetUpdate.status).toBe(400)
+        expect(resWithoutPrecedents.status).toBe(400)
         done()
       })
     })
