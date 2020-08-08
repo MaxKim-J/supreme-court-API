@@ -1,4 +1,4 @@
-import { Precedent } from './precedent'
+import { Instance } from './instance'
 
 declare global {
   interface Precedent {
@@ -7,9 +7,5 @@ declare global {
     url:string,
     type:string,
   }
-  export interface PrecedentInstance extends Precedent {
-    id:number,
-    createdAt:Date,
-    updatedAt:Date,
-  }
+  interface PrecedentInstance extends Instance, Precedent {}
 }
