@@ -9,6 +9,9 @@ switch (process.env.NODE_ENV) {
   case 'development':
     path = `${__dirname}/env/dev.env`
     break
+  case 'test':
+    path = `${__dirname}/env/test.env`
+    break
   default:
     path = `${__dirname}/env/dev.env`
     break
