@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express'
-import Precedent from '@/models/entities/precedent'
 import PrecedentModels from '../../models/precedentModels'
 import pagingHelper from '../../utils/pagingHelper'
 
