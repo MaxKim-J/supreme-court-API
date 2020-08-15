@@ -7,8 +7,7 @@ declare global {
     content:string,
     url:string,
     type:string,
-    success?:boolean
   }
   interface PrecedentInstance extends Instance, Precedent {}
-  export interface Mutation<T = any> extends ErrorSafety<T> {}
+  interface Mutation<T = any> extends ErrorSafety<T> {}
 }
