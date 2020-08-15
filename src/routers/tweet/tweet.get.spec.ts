@@ -1,5 +1,6 @@
 import { Response } from 'supertest'
 import { Express } from 'express'
+import Tweet from '@/models/entities/tweet'
 import { mockGetResponse, loadApp } from '../../utils/testHelper'
 
 describe('GET /tweet', () => {

@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import { OK, CREATED } from 'http-status-codes'
-import { BadRequest } from '../../errors/index'
+import Precedent from '@/models/entities/precedent'
 import PrecedentModels from '../../models/precedentModels'
+import { BadRequest } from '../../errors/index'
 import pagingHelper from '../../utils/pagingHelper'
 
 const precedentModels:PrecedentModels = new PrecedentModels()
@@ -9,7 +10,7 @@ const precedentModels:PrecedentModels = new PrecedentModels()
 const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
   const { type, page } = req.query
   const allowTypes:string[] = ['civil', 'criminal']
-  let precedents:PrecedentInstance[] | undefined
+  let precedents:Precedent[] | undefined
   try {
     if (type) {
       if (allowTypes.includes(type as string)) {
@@ -24,7 +25,7 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
     if (page) {
       const intPage = parseInt(page as string, 10)
       if (Number.isNaN(intPage)) { throw new BadRequest('page query는 숫자만 가능합니다.') }
-      precedents = pagingHelper(precedents as PrecedentInstance[], intPage)
+      precedents = pagingHelper(precedents as Precedent[], intPage)
     }
     const counts = precedents?.length ?? 0
     return res.status(OK).json({ counts, precedents })
