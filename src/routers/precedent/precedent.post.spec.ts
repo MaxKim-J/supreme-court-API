@@ -42,7 +42,7 @@ describe('POST /precedent', () => {
       })
       it('생성된 Precedent 객체들을 배열로 반환한다.', async (done) => {
         res = await mockPostResponse(app, '/precedent', properTweetUpdateBody)
-        expect(Array.isArray(res.body.newPrecedents)).toBe(true)
+        expect(Array.isArray(res.body.result)).toBe(true)
         done()
       })
       it('isTweetUpdate가 true일 경우 생성된 Tweet개수는 0 이상이다.', async (done) => {

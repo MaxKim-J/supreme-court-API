@@ -33,15 +33,15 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
 const postPrecedents = async (req:Request, res:Response, next:NextFunction) => {
   const { precedents } = req.body
   if (!precedents) { return res.status(400).end() }
-  const promises = precedents.map((
+  const precedentsUpdatingList = precedents.map((
     precedent:Precedent,
   ) => precedentModels.createPrecedent(precedent))
 
-  const result = await Promise.all(promises)
+  const result = await Promise.all(precedentsUpdatingList)
   const counts = result.length
   // TODO 판례요지 문자별 파싱 로직
   // const newTweetCounts = 0
-  // if (isTweetUpdate) {}
+  // if (isTweetUpdate !== false) {}
 
   return res.status(201).json({ counts, result })
 }
