@@ -8,6 +8,13 @@ declare global {
     url:string,
     type:string,
   }
+  interface Tweet {
+    content: string,
+    uploadedAt: null | Date
+  }
+
   interface PrecedentInstance extends Instance, Precedent {}
+  interface TweetInstance extends Instance, Tweet {}
+
   interface Mutation<T = any> extends ErrorSafety<T> {}
 }
