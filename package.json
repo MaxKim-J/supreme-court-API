@@ -21,7 +21,8 @@
     },
     "testRegex": "\\.spec\\.ts$",
     "moduleFileExtensions": [
-      "ts", "js"
+      "ts",
+      "js"
     ],
     "globals": {
       "ts-jest": {
@@ -43,6 +44,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "pg": "^8.3.0",
+    "typedi": "^0.8.0",
     "typeorm": "^0.2.25"
   },
   "devDependencies": {
