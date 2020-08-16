@@ -1,11 +1,14 @@
 import { Request, Response, NextFunction } from 'express'
 import { OK, CREATED } from 'http-status-codes'
 import Precedent from '@/models/entities/precedent'
+import Tweet from '@/models/entities/tweet'
+import TweetModels from '../../models/tweetModels'
 import PrecedentModels from '../../models/precedentModels'
 import { BadRequest } from '../../errors/index'
 import pagingHelper from '../../utils/pagingHelper'
 
 const precedentModels:PrecedentModels = new PrecedentModels()
+const tweetModels:TweetModels = new TweetModels()
 
 const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
   const { type, page } = req.query
@@ -33,22 +36,61 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
     next(e)
   }
 }
+const resolveUpdatePromises = async <T>(updatingList:Promise<Mutation<T>>[]) => {
+  const updatedResult = await Promise.all(updatingList)
+  const newElementLength = updatedResult.filter((
+    updatedElement,
+  ) => updatedElement?.success).length
+
+  return { updatedResult, newElementLength }
+}
 
 const postPrecedents = async (req:Request, res:Response, next:NextFunction) => {
-  const { precedents } = req.body
+  const { precedents, isTweetUpdate } = req.body
   try {
     if (!precedents || precedents.length < 1) { throw new BadRequest('precedent는 1개 이상이 필요합니다.') }
-    const precedentsUpdatingList = precedents.map((
+    const precedentsUpdatingList:Promise<Mutation<Precedent>>[] = precedents.map((
       precedent:Precedent,
     ) => precedentModels.createPrecedent(precedent))
 
-    const result = await Promise.all(precedentsUpdatingList)
-    const counts = result.length
-    // TODO 판례요지 문자별 파싱 로직
-    // const newTweetCounts = 0
-    // if (isTweetUpdate !== false) {}
+    const {
+      updatedResult: precedentsUpdatedResult,
+      newElementLength: newPrecedentsLength,
+    } = await resolveUpdatePromises<Precedent>(precedentsUpdatingList)
 
-    return res.status(CREATED).json({ counts, result })
+    if (isTweetUpdate ?? false) {
+      const tweetsUpdatingList:Promise<Mutation<Tweet>>[] = precedentsUpdatedResult.map((
+        precedent:Mutation<Precedent>,
+      ) => tweetModels.createTweet({
+        content: precedent.result?.content,
+        uploadedAt: null,
+        precedent: precedent.result,
+      }))
+
+      const {
+        updatedResult: tweetsUpdatedResult,
+        newElementLength: newTweetsLength,
+      } = await resolveUpdatePromises<Tweet>(tweetsUpdatingList)
+
+      return res.status(CREATED).json({
+        counts: {
+          newPrecedentsLength,
+          newTweetsLength,
+        },
+        result: {
+          precedentsUpdatedResult,
+          tweetsUpdatedResult,
+        },
+      })
+    }
+    return res.status(CREATED).json({
+      counts: {
+        newPrecedentsLength,
+      },
+      result: {
+        precedentsUpdatedResult,
+      },
+    })
   } catch (e) {
     next(e)
   }

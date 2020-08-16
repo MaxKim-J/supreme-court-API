@@ -1,3 +1,4 @@
+import { DeepPartial } from 'typeorm'
 import Tweet from '../models/entities/tweet'
 
 class TweetModel {
@@ -18,6 +19,21 @@ class TweetModel {
       .select(['tweet', 'precedent.name', 'precedent.url', 'precedent.id'])
       .where('tweet.uploadedAt IS NULL')
       .getMany()
+  }
+
+  async createTweet(tweet:DeepPartial<Tweet>):Promise<Mutation<Tweet>> {
+    try {
+      const result = await Tweet.create(tweet).save()
+      return {
+        success: true,
+        result,
+      }
+    } catch (e) {
+      return {
+        success: false,
+        error: e,
+      }
+    }
   }
 }
 

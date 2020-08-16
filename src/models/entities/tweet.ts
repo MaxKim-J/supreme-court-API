@@ -19,7 +19,7 @@ class Tweet extends BaseEntity {
     content: string;
 
     @CreateDateColumn({ type: 'timestamp with time zone', nullable: true })
-    uploadedAt: Date;
+    uploadedAt: Date | null;
 
     @CreateDateColumn({ type: 'timestamp with time zone' })
     createdAt: Date;
