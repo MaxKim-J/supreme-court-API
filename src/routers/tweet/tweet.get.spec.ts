@@ -41,9 +41,9 @@ describe('GET /tweet', () => {
         expect(res.body.counts).toBe(1)
         done()
       })
-      it('리턴한 Tweet객체의 isUploaded 속성은 null이다.', async (done) => {
+      it('리턴한 Tweet객체의 uploadedAt 속성은 null이다.', async (done) => {
         res = await mockGetResponse(app, '/tweet/current')
-        expect(res.body.tweet.isUploaded).toBe(null)
+        expect(res.body.tweet.uploadedAt).toBe(null)
         done()
       })
     })
@@ -56,17 +56,16 @@ describe('GET /tweet', () => {
         expect(res.status).toBe(200)
         done()
       })
-      it('배열에는 isUploaded 속성이 null이 아닌 tweet 객체들만 존재한다.', async (done) => {
+      it('배열에는 uploadedAt 속성이 null이 아닌 tweet 객체들만 존재한다.', async (done) => {
         res = await mockGetResponse(app, '/tweet/previous')
         res.body.tweets.forEach((tweet:Tweet) => {
           expect(tweet.uploadedAt).not.toBe(null)
         })
-        expect(Array.isArray(res.body.precedents)).toBe(true)
         done()
       })
       it('last 쿼리에 숫자를 넣어 요청하면 숫자만큼의 tweet 객체를 반환한다.', async (done) => {
-        res = await mockGetResponse(app, '/tweet/previous?last=5')
-        expect(res.body.counts).toBe(5)
+        res = await mockGetResponse(app, '/tweet/previous?last=2')
+        expect(res.body.counts).toBe(2)
         done()
       })
     })
