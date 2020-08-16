@@ -5,7 +5,7 @@ import Tweet from '@/models/entities/tweet'
 import TweetModels from '../../models/tweetModels'
 import PrecedentModels from '../../models/precedentModels'
 import { BadRequest } from '../../errors/index'
-import pagingHelper from '../../utils/pagingHelper'
+import sliceByPage from '../../utils/pagingHelper'
 
 const precedentModels:PrecedentModels = new PrecedentModels()
 const tweetModels:TweetModels = new TweetModels()
@@ -28,7 +28,7 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
     if (page) {
       const intPage = parseInt(page as string, 10)
       if (Number.isNaN(intPage)) { throw new BadRequest('page query는 숫자만 가능합니다.') }
-      precedents = pagingHelper(precedents as Precedent[], intPage)
+      precedents = sliceByPage(precedents as Precedent[], intPage)
     }
     const counts = precedents?.length ?? 0
     return res.status(OK).json({ counts, precedents })
