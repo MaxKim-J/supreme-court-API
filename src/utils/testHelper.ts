@@ -1,5 +1,6 @@
 import request, { Response } from 'supertest'
 import express, { Express } from 'express'
+import Precedent from '../models/entities/precedent'
 import loaders from '../loaders'
 
 export const loadApp = async ():Promise<Express> => {

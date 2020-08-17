@@ -26,6 +26,23 @@ describe('GET /tweet', () => {
         expect(res.body.counts).toBeGreaterThanOrEqual(0)
         done()
       })
+      it('쿼리로 id를 같이 요청한다면 id에 해당하는 트윗 객체 하나를 반환한다', async (done) => {
+        res = await mockGetResponse(app, '/tweet?id=13')
+        expect(res.body.tweet.id).toBe(13)
+        done()
+      })
+    })
+    describe('요청 실패시', () => {
+      it('id에 해당하는 tweet이 없을 경우 404를 반환한다.', async (done) => {
+        res = await mockGetResponse(app, '/tweet?id=3480399')
+        expect(res.status).toBe(404)
+        done()
+      })
+      it('id가 숫자가 아닌 경우 400을 반환한다.', async (done) => {
+        res = await mockGetResponse(app, '/tweet?id=sdf')
+        expect(res.status).toBe(400)
+        done()
+      })
     })
   })
 

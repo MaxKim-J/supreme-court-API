@@ -6,6 +6,10 @@ class TweetModel {
     return Tweet.find()
   }
 
+  getTweetById(id:number):Promise<Tweet | undefined> {
+    return Tweet.findOne({ where: { id } })
+  }
+
   getUploadedTweets():Promise<Tweet[]> {
     return Tweet.createQueryBuilder('tweet')
       .where('tweet.uploadedAt IS NOT NULL')
