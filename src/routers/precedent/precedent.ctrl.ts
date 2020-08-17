@@ -6,6 +6,7 @@ import TweetModels from '../../models/tweetModels'
 import PrecedentModels from '../../models/precedentModels'
 import { BadRequest } from '../../errors/index'
 import sliceByPage from '../../utils/pagingHelper'
+import parsingPrecedent from '../../utils/parsingHelper'
 
 const precedentModels:PrecedentModels = new PrecedentModels()
 const tweetModels:TweetModels = new TweetModels()
@@ -59,13 +60,19 @@ const postPrecedents = async (req:Request, res:Response, next:NextFunction) => {
     } = await resolveUpdatePromises<Precedent>(precedentsUpdatingList)
 
     if (isTweetUpdate ?? false) {
-      const tweetsUpdatingList:Promise<Mutation<Tweet>>[] = precedentsUpdatedResult.map((
+      const tweetsUpdatingList:Promise<Mutation<Tweet>>[] = []
+      precedentsUpdatedResult.forEach((
         precedent:Mutation<Precedent>,
-      ) => tweetModels.createTweet({
-        content: precedent.result?.content,
-        uploadedAt: null,
-        precedent: precedent.result,
-      }))
+      ) => {
+        const { content } = precedent.result as Precedent
+        parsingPrecedent(content).forEach((cont) => {
+          tweetsUpdatingList.push(tweetModels.createTweet({
+            content: cont,
+            uploadedAt: null,
+            precedent: precedent.result,
+          }))
+        })
+      })
 
       const {
         updatedResult: tweetsUpdatedResult,
