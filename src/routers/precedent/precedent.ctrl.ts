@@ -93,9 +93,11 @@ const postPrecedents = async (req:Request, res:Response, next:NextFunction) => {
     return res.status(CREATED).json({
       counts: {
         newPrecedentsLength,
+        newTweetsLength: 0,
       },
       result: {
         precedentsUpdatedResult,
+        tweetsUpdatedResult: [],
       },
     })
   } catch (e) {
