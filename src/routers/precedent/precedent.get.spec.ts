@@ -1,13 +1,24 @@
 import { Response } from 'supertest'
 import { Express } from 'express'
-import Precedent from '@/models/entities/precedent'
+import Precedent from '../../models/entities/precedent'
+import Tweet from '../../models/entities/tweet'
+import { precedentMockData } from '../../utils/testMockData'
 import { mockGetResponse, loadApp } from '../../utils/testHelper'
 
 describe('GET /precedent', () => {
   let app:Express
   let res:Response
-  beforeAll(async () => {
+  beforeAll(async (done) => {
     app = await loadApp()
+    precedentMockData.forEach(async (mockData) => {
+      await Precedent.create(mockData).save()
+    })
+    done()
+  })
+  afterAll(async (done) => {
+    await Tweet.delete({})
+    await Precedent.delete({})
+    done()
   })
   describe('/precedent', () => {
     describe('요청 성공시', () => {
