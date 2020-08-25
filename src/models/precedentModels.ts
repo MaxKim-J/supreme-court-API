@@ -8,7 +8,7 @@ class PrecedentModel {
   }
 
   // get base/precedent/?type='civil'
-  getPrecedentsByType(type:string):Promise<Precedent[] | undefined> {
+  getPrecedentsByType(type:string):Promise<Precedent[]> {
     return Precedent.find({ where: { type } })
   }
 

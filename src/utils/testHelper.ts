@@ -1,5 +1,6 @@
 import request, { Response } from 'supertest'
 import express, { Express } from 'express'
+import Precedent from '../models/entities/precedent'
 import loaders from '../loaders'
 
 export const loadApp = async ():Promise<Express> => {
@@ -19,5 +20,14 @@ export const mockPostResponse = async (
   body:Precedent[] | any,
 ):Promise<Response> => {
   const res:Response = await request(app).post(url).send(body)
+  return res
+}
+
+export const mockPutResponse = async (
+  app:Express,
+  url:string,
+  body:any,
+) => {
+  const res:Response = await request(app).put(url).send(body)
   return res
 }

@@ -1,5 +1,6 @@
 import { Response } from 'supertest'
 import { Express } from 'express'
+import Precedent from '@/models/entities/precedent'
 import { mockGetResponse, loadApp } from '../../utils/testHelper'
 
 describe('GET /precedent', () => {
@@ -43,10 +44,10 @@ describe('GET /precedent', () => {
       it('type에 맞는 Precedent만 가져온다.', async (done) => {
         const criminalRes = await mockGetResponse(app, '/precedent?type=criminal')
         const civilRes = await mockGetResponse(app, '/precedent?type=civil')
-        criminalRes.body.precedents.forEach((elem:PrecedentInstance) => {
+        criminalRes.body.precedents.forEach((elem:Precedent) => {
           expect(elem.type).toBe('criminal')
         })
-        civilRes.body.precedents.forEach((elem:PrecedentInstance) => {
+        civilRes.body.precedents.forEach((elem:Precedent) => {
           expect(elem.type).toBe('civil')
         })
         done()

@@ -1,15 +1,20 @@
 import { Request, Response, NextFunction } from 'express'
 import { OK, CREATED } from 'http-status-codes'
-import { BadRequest } from '../../errors/index'
+import Precedent from '@/models/entities/precedent'
+import Tweet from '@/models/entities/tweet'
+import TweetModels from '../../models/tweetModels'
 import PrecedentModels from '../../models/precedentModels'
-import pagingHelper from '../../utils/pagingHelper'
+import { BadRequest } from '../../errors/index'
+import sliceByPage from '../../utils/pagingHelper'
+import parsingPrecedent from '../../utils/parsingHelper'
 
 const precedentModels:PrecedentModels = new PrecedentModels()
+const tweetModels:TweetModels = new TweetModels()
 
 const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
   const { type, page } = req.query
   const allowTypes:string[] = ['civil', 'criminal']
-  let precedents:PrecedentInstance[] | undefined
+  let precedents:Precedent[] | undefined
   try {
     if (type) {
       if (allowTypes.includes(type as string)) {
@@ -24,7 +29,7 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
     if (page) {
       const intPage = parseInt(page as string, 10)
       if (Number.isNaN(intPage)) { throw new BadRequest('page query는 숫자만 가능합니다.') }
-      precedents = pagingHelper(precedents as PrecedentInstance[], intPage)
+      precedents = sliceByPage(precedents as Precedent[], intPage)
     }
     const counts = precedents?.length ?? 0
     return res.status(OK).json({ counts, precedents })
@@ -32,22 +37,69 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
     next(e)
   }
 }
+const resolveUpdatePromises = async <T>(updatingList:Promise<Mutation<T>>[]) => {
+  const updatedResult = await Promise.all(updatingList)
+  const newElementLength = updatedResult.filter((
+    updatedElement,
+  ) => updatedElement?.success).length
+
+  return { updatedResult, newElementLength }
+}
 
 const postPrecedents = async (req:Request, res:Response, next:NextFunction) => {
-  const { precedents } = req.body
+  const { precedents, isTweetUpdate } = req.body
   try {
     if (!precedents || precedents.length < 1) { throw new BadRequest('precedent는 1개 이상이 필요합니다.') }
-    const precedentsUpdatingList = precedents.map((
+    const precedentsUpdatingList:Promise<Mutation<Precedent>>[] = precedents.map((
       precedent:Precedent,
     ) => precedentModels.createPrecedent(precedent))
 
-    const result = await Promise.all(precedentsUpdatingList)
-    const counts = result.length
-    // TODO 판례요지 문자별 파싱 로직
-    // const newTweetCounts = 0
-    // if (isTweetUpdate !== false) {}
+    const {
+      updatedResult: precedentsUpdatedResult,
+      newElementLength: newPrecedentsLength,
+    } = await resolveUpdatePromises<Precedent>(precedentsUpdatingList)
 
-    return res.status(CREATED).json({ counts, result })
+    if (isTweetUpdate ?? false) {
+      const tweetsUpdatingList:Promise<Mutation<Tweet>>[] = []
+      precedentsUpdatedResult.forEach((
+        precedent:Mutation<Precedent>,
+      ) => {
+        const { content } = precedent.result as Precedent
+        parsingPrecedent(content).forEach((cont) => {
+          tweetsUpdatingList.push(tweetModels.createTweet({
+            content: cont,
+            uploadedAt: null,
+            precedent: precedent.result,
+          }))
+        })
+      })
+
+      const {
+        updatedResult: tweetsUpdatedResult,
+        newElementLength: newTweetsLength,
+      } = await resolveUpdatePromises<Tweet>(tweetsUpdatingList)
+
+      return res.status(CREATED).json({
+        counts: {
+          newPrecedentsLength,
+          newTweetsLength,
+        },
+        result: {
+          precedentsUpdatedResult,
+          tweetsUpdatedResult,
+        },
+      })
+    }
+    return res.status(CREATED).json({
+      counts: {
+        newPrecedentsLength,
+        newTweetsLength: 0,
+      },
+      result: {
+        precedentsUpdatedResult,
+        tweetsUpdatedResult: [],
+      },
+    })
   } catch (e) {
     next(e)
   }
