@@ -38,7 +38,6 @@ describe('GET /tweet', () => {
       })
       it('쿼리로 id를 같이 요청한다면 id에 해당하는 트윗 객체 하나를 반환한다', async (done) => {
         res = await mockGetResponse(app, '/tweet?id=3')
-        console.log(res.body)
         expect(res.body.tweet.id).toBe(3)
         done()
       })
