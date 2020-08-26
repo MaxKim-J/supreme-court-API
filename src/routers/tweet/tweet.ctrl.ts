@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
-import { OK } from 'http-status-codes'
+import { OK, CREATED } from 'http-status-codes'
 import Tweet from '@/models/entities/tweet'
 import TweetModels from '../../models/tweetModels'
-import { BadRequest, NotFound } from '../../errors'
+import { BadRequest, NotFound, Conflict } from '../../errors'
 
 const tweetModels:TweetModels = new TweetModels()
 
@@ -44,7 +44,22 @@ const getPreviousTweet = async (req:Request, res:Response, next:NextFunction) =>
     const counts = uploadedTweets.length
     return res.status(OK).json({ counts, tweets: uploadedTweets })
   } catch (e) {
-    next(e)
+    return next(e)
+  }
+}
+
+const putTimeStampOnTweet = async (req:Request, res:Response, next:NextFunction) => {
+  const { id } = req.params
+  try {
+    const idInt = parseInt(id as string, 10)
+    if (Number.isNaN(idInt)) { throw new BadRequest('id query는 숫자만 가능합니다.') }
+    const tweet = await tweetModels.getTweetById(idInt)
+    if (!tweet) { throw new NotFound('id에 해당하는 트윗이 존재하지 않습니다.') }
+    if (tweet.uploadedAt !== null) { throw new Conflict('이미 업로드된 트윗입니다.') }
+    const { raw, affected } = await tweetModels.putTimestampOnTweet(idInt, new Date())
+    return res.status(CREATED).json({ counts: affected, tweet: raw[0] })
+  } catch (e) {
+    return next(e)
   }
 }
 
@@ -52,4 +67,5 @@ export default {
   getTweet,
   getCurrentTweet,
   getPreviousTweet,
+  putTimeStampOnTweet,
 }
