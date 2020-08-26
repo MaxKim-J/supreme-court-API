@@ -1,32 +1,24 @@
 import { Response } from 'supertest'
 import { Express } from 'express'
 import { mockPostResponse, loadApp } from '../../utils/testHelper'
-
-const newProperPrecedent = {
-  name: '판례제목',
-  content: '판례내용',
-  url: '유알엘',
-  type: '타입',
-}
-const properTweetUpdateBody = {
-  isTweetUpdate: true,
-  precedents: [newProperPrecedent],
-}
-const properNotTweetUpdateBody = {
-  isTweetUpdate: false,
-  precedents: [newProperPrecedent],
-}
-
-const bodyWithoutPrecedents = {
-  isTweetUpdate: false,
-}
+import {
+  properTweetUpdateBody, properNotTweetUpdateBody, bodyWithoutPrecedents,
+} from '../../utils/testMockData'
+import Precedent from '../../models/entities/precedent'
+import Tweet from '../../models/entities/tweet'
 
 describe('POST /precedent', () => {
   let app:Express
   let res:Response
 
-  beforeAll(async () => {
+  beforeAll(async (done) => {
     app = await loadApp()
+    done()
+  })
+  afterAll(async (done) => {
+    await Tweet.delete({})
+    await Precedent.delete({})
+    done()
   })
   describe('/precedent', () => {
     describe('요청 성공시', () => {

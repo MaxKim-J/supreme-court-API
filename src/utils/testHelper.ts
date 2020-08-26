@@ -26,8 +26,7 @@ export const mockPostResponse = async (
 export const mockPutResponse = async (
   app:Express,
   url:string,
-  body:any,
 ) => {
-  const res:Response = await request(app).put(url).send(body)
+  const res:Response = await request(app).put(url)
   return res
 }
