@@ -31,6 +31,29 @@ export const precedentMockData = [
   },
 ]
 
+export const tweetMockData = [
+  {
+    content: '판례내용',
+    uploadedAt: null,
+  },
+  {
+    content: '판례내용',
+    uploadedAt: null,
+  },
+  {
+    content: '판례내용',
+    uploadedAt: new Date(),
+  },
+  {
+    content: '판례내용',
+    uploadedAt: new Date(),
+  },
+  {
+    content: '판례내용',
+    uploadedAt: null,
+  },
+]
+
 export const newProperPrecedent = {
   name: '판례제목',
   content: '판례내용',
@@ -50,5 +73,3 @@ export const properNotTweetUpdateBody = {
 export const bodyWithoutPrecedents = {
   isTweetUpdate: false,
 }
-
-export const tweetMockData = []

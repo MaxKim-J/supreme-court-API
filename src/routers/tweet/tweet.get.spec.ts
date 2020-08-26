@@ -1,13 +1,23 @@
 import { Response } from 'supertest'
 import { Express } from 'express'
+import { tweetMockData } from '../../utils/testMockData'
 import { mockGetResponse, loadApp } from '../../utils/testHelper'
 import Tweet from '../../models/entities/tweet'
+import Precedent from '../../models/entities/precedent'
 
 describe('GET /tweet', () => {
   let app:Express
   let res:Response
   beforeAll(async () => {
     app = await loadApp()
+    tweetMockData.forEach(async (mockData) => {
+      await Tweet.create(mockData).save()
+    })
+  })
+  afterAll(async (done) => {
+    await Tweet.delete({})
+    await Precedent.delete({})
+    done()
   })
   describe('/tweet', () => {
     describe('요청 성공시', () => {
@@ -27,8 +37,9 @@ describe('GET /tweet', () => {
         done()
       })
       it('쿼리로 id를 같이 요청한다면 id에 해당하는 트윗 객체 하나를 반환한다', async (done) => {
-        res = await mockGetResponse(app, '/tweet?id=13')
-        expect(res.body.tweet.id).toBe(13)
+        res = await mockGetResponse(app, '/tweet?id=3')
+        console.log(res.body)
+        expect(res.body.tweet.id).toBe(3)
         done()
       })
     })

@@ -2,6 +2,8 @@ import { Response } from 'supertest'
 import { Express } from 'express'
 import { mockPutResponse, loadApp } from '../../utils/testHelper'
 import TweetModels from '../../models/tweetModels'
+import Tweet from '../../models/entities/tweet'
+import Precedent from '../../models/entities/precedent'
 
 const properTweetBody = {
   name: '판례제목',
@@ -26,6 +28,11 @@ describe('PUT /tweet', () => {
     const tweetModels:TweetModels = new TweetModels()
     const { result } = await tweetModels.createTweet(properTweetBody)
     tweetId = result?.id as number
+  })
+  afterAll(async (done) => {
+    await Tweet.delete({})
+    await Precedent.delete({})
+    done()
   })
   describe('/tweet/:id', () => {
     describe('요청 성공시', () => {
