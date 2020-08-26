@@ -1,4 +1,4 @@
-import { DeepPartial } from 'typeorm'
+import { DeepPartial, UpdateResult } from 'typeorm'
 import Tweet from '../models/entities/tweet'
 
 class TweetModel {
@@ -23,6 +23,14 @@ class TweetModel {
       .select(['tweet', 'precedent.name', 'precedent.url', 'precedent.id'])
       .where('tweet.uploadedAt IS NULL')
       .getMany()
+  }
+
+  putTimestampOnTweet(id:number, uploadedAt:Date):Promise<UpdateResult> {
+    return Tweet.createQueryBuilder('tweet')
+      .update(Tweet, { uploadedAt })
+      .where('tweet.id = :id', { id })
+      .returning(['id', 'content', 'uploadedAt'])
+      .execute()
   }
 
   async createTweet(tweet:DeepPartial<Tweet>):Promise<Mutation<Tweet>> {

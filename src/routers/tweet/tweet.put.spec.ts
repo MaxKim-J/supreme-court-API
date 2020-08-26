@@ -12,9 +12,10 @@ describe('PUT /tweet', () => {
 
   beforeAll(async () => {
     app = await loadApp()
-    tweetMockData.forEach(async (mockData) => {
-      await Tweet.create(mockData).save()
-    })
+  })
+  beforeEach(async () => {
+    const { id } = await Tweet.create(tweetMockData[0]).save()
+    tweetId = id
   })
   afterAll(async (done) => {
     await Tweet.delete({})
@@ -35,7 +36,7 @@ describe('PUT /tweet', () => {
       })
       it('반환하는 Tweet객체는 uploadedAt이 null이 아니다', async (done) => {
         res = await mockPutResponse(app, `/tweet/${tweetId}`)
-        expect(res.body.tweet.updatedAt).not.toBe(null)
+        expect(res.body.tweet.uploadedAt).not.toBe(null)
         done()
       })
     })
@@ -46,7 +47,7 @@ describe('PUT /tweet', () => {
         done()
       })
       it('id에 해당하는 tweet의 uploadedAt이 이미 null이 아닌 경우 409를 반환한다.', async (done) => {
-        res = await mockPutResponse(app, `/tweet/${tweetId}`)
+        res = await mockPutResponse(app, `/tweet/${tweetId - 2}`)
         expect(res.status).toBe(409)
         done()
       })

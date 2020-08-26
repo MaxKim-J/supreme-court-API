@@ -2,6 +2,7 @@ import {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
+  CONFLICT,
 } from 'http-status-codes'
 
 abstract class RequestError extends Error {
@@ -23,6 +24,13 @@ export class NotFound extends RequestError {
   constructor(message: string = '리소스가 존재하지 않습니다.') {
     super(message)
     this.statusCode = NOT_FOUND
+  }
+}
+
+export class Conflict extends RequestError {
+  constructor(message: string = '리소스가 이미 변경되었습니다.') {
+    super(message)
+    this.statusCode = CONFLICT
   }
 }
 

@@ -7,6 +7,7 @@ import PrecedentModels from '../../models/precedentModels'
 import { BadRequest } from '../../errors/index'
 import sliceByPage from '../../utils/pagingHelper'
 import parsingPrecedent from '../../utils/parsingHelper'
+import validateIdNaN from '../../utils/idValidatingHelper'
 
 const precedentModels:PrecedentModels = new PrecedentModels()
 const tweetModels:TweetModels = new TweetModels()
@@ -27,14 +28,13 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
     }
 
     if (page) {
-      const intPage = parseInt(page as string, 10)
-      if (Number.isNaN(intPage)) { throw new BadRequest('page query는 숫자만 가능합니다.') }
-      precedents = sliceByPage(precedents as Precedent[], intPage)
+      const pageNum = validateIdNaN(page as string)
+      precedents = sliceByPage(precedents as Precedent[], pageNum)
     }
     const counts = precedents?.length ?? 0
     return res.status(OK).json({ counts, precedents })
   } catch (e) {
-    next(e)
+    return next(e)
   }
 }
 const resolveUpdatePromises = async <T>(updatingList:Promise<Mutation<T>>[]) => {
@@ -101,7 +101,7 @@ const postPrecedents = async (req:Request, res:Response, next:NextFunction) => {
       },
     })
   } catch (e) {
-    next(e)
+    return next(e)
   }
 }
 
