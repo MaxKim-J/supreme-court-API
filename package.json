@@ -5,27 +5,47 @@
   "repository": "https://github.com/MaxKim-J/supreme-court-API",
   "author": "Max Kim",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "start:dev": "NODE_ENV=development nodemon --exec 'ts-node' src",
     "start:prod": "NODE_ENV=production nodemon --exec 'ts-node' src",
     "build:dev": "rimraf ./dist && webpack --env.NODE_ENV=development",
-    "build:prod": "rimraf ./dist && webpack --env.NODE_ENV=production ", 
+    "build:prod": "rimraf ./dist && webpack --env.NODE_ENV=production ",
     "kill:dev": "kill -9 $(lsof -t -i:3000)",
     "kill:prod": "kill -9 $(lsof -t -i:2500)",
-    "test": "NODE_ENV=test jest src"
+    "test": "NODE_ENV=test jest --verbose --forceExit --detectOpenHandles"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": true
+      }
+    }
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.7",
+    "@types/jest": "^26.0.8",
     "@types/morgan": "^1.9.1",
+    "@types/supertest": "^2.0.10",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
+    "http-status-codes": "^1.4.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "pg": "^8.3.0",
+    "typedi": "^0.8.0",
     "typeorm": "^0.2.25"
   },
   "devDependencies": {
@@ -44,6 +64,7 @@
     "jest": "^26.1.0",
     "rimraf": "^3.0.2",
     "supertest": "^4.0.2",
+    "ts-jest": "^26.1.4",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7",
     "webpack": "^4.44.0",
