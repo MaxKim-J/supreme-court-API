@@ -13,10 +13,7 @@ class User extends BaseEntity {
   id: number;
 
   @Column({ type: 'varchar' })
-  username: string;
-
-  @Column({ type: 'varchar' })
-  password: string;
+  key: string;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
