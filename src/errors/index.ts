@@ -3,6 +3,7 @@ import {
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
   CONFLICT,
+  UNAUTHORIZED,
 } from 'http-status-codes'
 
 abstract class RequestError extends Error {
@@ -38,5 +39,12 @@ export class InternalServerError extends RequestError {
   constructor(message: string = '서버 내부에서 에러가 발생했습니다.') {
     super(message)
     this.statusCode = INTERNAL_SERVER_ERROR
+  }
+}
+
+export class Unauthorized extends RequestError {
+  constructor(message: string = '권한이 없습니다.') {
+    super(message)
+    this.statusCode = UNAUTHORIZED
   }
 }
