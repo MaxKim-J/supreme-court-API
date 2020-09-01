@@ -2,7 +2,8 @@ import morgan from 'morgan'
 import express, {
   Express, Request, Response, NextFunction,
 } from 'express'
-
+import { Unauthorized } from '../errors/index'
+import User from '../models/entities/user'
 import configs from '../configs'
 import router from '../routers'
 
@@ -14,6 +15,18 @@ const appLoader = (app: Express) => {
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
 
+  // Authorization middleware
+  app.use(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { authorization } = req.headers
+      if (!authorization) { throw new Unauthorized() }
+      const isInUserEntity:User | undefined = await User.findOne({ key: authorization })
+      if (!isInUserEntity) { throw new Unauthorized() }
+    } catch (e) {
+      return next(e)
+    }
+    return next()
+  })
   app.use('', router)
 
   // error processing middleware
