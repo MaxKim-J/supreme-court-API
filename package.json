@@ -5,7 +5,6 @@
   "repository": "https://github.com/MaxKim-J/supreme-court-API",
   "author": "Max Kim",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "start:dev": "NODE_ENV=development ts-node src",
     "start:prod": "NODE_ENV=production ts-node src",

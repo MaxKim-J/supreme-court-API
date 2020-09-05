@@ -24,7 +24,7 @@ class Precedent extends BaseEntity {
     @Column({ type: 'varchar' })
     url: string;
 
-    @Column({ type: 'varchar', length: 10 })
+    @Column({ type: 'varchar', length: 20 })
     type: string;
 
     @CreateDateColumn({ type: 'timestamp with time zone' })

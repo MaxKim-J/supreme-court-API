@@ -101,6 +101,7 @@ const postPrecedents = async (req:Request, res:Response, next:NextFunction) => {
       },
     })
   } catch (e) {
+    console.log(e)
     return next(e)
   }
 }
