@@ -4,6 +4,6 @@
 
 const parsingPrecedentContent = (
   content:string,
-):string[] => content.split('<br>')
+):string[] => content.split('<br>').filter((line:string) => line)
 
 export default parsingPrecedentContent
