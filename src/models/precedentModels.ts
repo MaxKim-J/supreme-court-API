@@ -6,6 +6,10 @@ class PrecedentModel {
     return Precedent.find()
   }
 
+  getPrecedentById(id:number):Promise<Precedent|undefined> {
+    return Precedent.findOne({ where: { id } })
+  }
+
   getPrecedentsByType(type:string):Promise<Precedent[]> {
     return Precedent.find({ where: { type } })
   }
