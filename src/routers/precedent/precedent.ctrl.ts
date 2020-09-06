@@ -18,6 +18,7 @@ const getPrecedents = async (req:Request, res:Response, next:NextFunction) => {
   let precedents:Precedent[] | undefined
   try {
     if (id) {
+      if (type || page) { throw new BadRequest('id 쿼리는 유일한 쿼리로만 사용할 수 있습니다.') }
       const precedentId = validateIdNaN(id as string)
       const precedent = await precedentModels.getPrecedentById(precedentId)
       if (!precedent) { throw new NotFound('id에 해당하는 판례가 존재하지 않습니다.') }

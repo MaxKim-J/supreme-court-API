@@ -9,6 +9,7 @@ const dbLoader = () => createConnection({
   password: configs.DB.PASSWORD,
   database: configs.DB.NAME,
   synchronize: true,
+  dropSchema: true,
   entities: ['src/models/entities/**/*.ts'],
 })
 
