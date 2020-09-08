@@ -23,7 +23,6 @@ const appLoader = (app: Express) => {
   // Authorization middleware
   app.use(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (req.path === '/') { return res.sendStatus(200) }
       const { authorization } = req.headers
       if (!authorization) { throw new Unauthorized() }
       const isInUserEntity:User | undefined = await User.findOne({ key: authorization })
