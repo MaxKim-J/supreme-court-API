@@ -7,7 +7,11 @@ class TweetModel {
   }
 
   getTweetById(id:number):Promise<Tweet | undefined> {
-    return Tweet.findOne({ where: { id } })
+    return Tweet.createQueryBuilder('tweet')
+      .leftJoinAndSelect('tweet.precedent', 'precedent')
+      .where('tweet.id = :id', { id })
+      .select(['tweet', 'precedent.id'])
+      .getOne()
   }
 
   getUploadedTweets():Promise<Tweet[]> {
