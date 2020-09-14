@@ -2,6 +2,7 @@ import morgan from 'morgan'
 import express, {
   Express, Request, Response, NextFunction,
 } from 'express'
+import cors from 'cors'
 import { Unauthorized } from '../errors/index'
 import User from '../models/entities/user'
 import configs from '../configs'
@@ -19,6 +20,7 @@ const appLoader = (app: Express) => {
     limit: '50mb',
     extended: true,
   }))
+  app.use(cors({ origin: true, credentials: true }))
 
   // Authorization middleware
   app.use(async (req: Request, res: Response, next: NextFunction) => {
