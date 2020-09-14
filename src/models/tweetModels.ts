@@ -16,6 +16,8 @@ class TweetModel {
 
   getUploadedTweets():Promise<Tweet[]> {
     return Tweet.createQueryBuilder('tweet')
+      .leftJoinAndSelect('tweet.precedent', 'precedent')
+      .select(['tweet', 'precedent.name', 'precedent.type'])
       .where('tweet.uploadedAt IS NOT NULL')
       .orderBy('tweet.uploadedAt', 'DESC')
       .getMany()
