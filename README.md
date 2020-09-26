@@ -1,6 +1,7 @@
 # 판례요지봇(precedent_bot)
 
 ###  🤖🐧👩🏻‍⚖️
+
 ![last](https://img.shields.io/github/last-commit/MaxKim-J/supreme-court-API) ![tweet](https://img.shields.io/twitter/follow/precedent_bot?label=%40precedent_bot&style=social)
 
 ![appImage](./appImage.png)
@@ -62,7 +63,7 @@
 - TDD를 도입하여, jest를 이용해 테스트코드를 작성했습니다. 4개의 suite, 39개의 유닛 테스트를 통과했습니다.
 - EC2에 직접 postgreSQL을 설치하여 배포했습니다. 무중단 서비스를 구현하기 위해 pm2도 사용했습니다.
 - generic, @types, global, class 등 TypeScript의 다양한 기능을 사용했습니다.
-- 이 포스팅을 참고하여 monolithic한 프로젝트 폴더 구조를 구축하려고 노력했습니다.
+- [이 포스팅](https://changhoi.github.io/posts/backend/serverside-typescript-setting-01/)을 참고하여 monolithic한 프로젝트 폴더 구조를 구축하려고 노력했습니다.
 - 도메인을 구입하고 AWS에서 인증서를 발급받아 https를 적용했습니다.
 
 #### 서버리스
@@ -77,6 +78,7 @@
 - Create React App을 사용하여 빠르게 리액트 앱을 구축했습니다. 
 - React.lazy, suspense를 사용하여 코드 스플리팅을 구현했습니다. 
 - vercel을 이용해 배포했습니다.
+- 트위터 포스팅에서 썸네일 등이 제대로 나타날 수 있도록 메타태그를 커스텀했습니다. 
 
 ### 앞으로 업데이트
 
