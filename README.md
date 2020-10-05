@@ -42,6 +42,8 @@
 
 - [React.js(+TypeScript)](https://github.com/facebook/create-react-app)
 - [React Router](https://github.com/ReactTraining/react-router)
+- [react-redux](https://github.com/reduxjs/react-redux)
+- [redux-saga](https://github.com/redux-saga/redux-saga)
 - SCSS
 
 ## 📖  Key Note
@@ -77,6 +79,8 @@
 
 - Create React App을 사용하여 빠르게 리액트 앱을 구축했습니다. 
 - React.lazy, suspense를 사용하여 코드 스플리팅을 구현했습니다. 
+- Redux를 이용해 상태관리를, Redux Saga를 사용해 비동기 로직을 쉽게 작성할 수 있도록 했습니다.
+- redux store를 이용한 fetchEntity 패턴을 도입해 비동기 로딩 컴포넌트를 작성했습니다.
 - vercel을 이용해 배포했습니다.
 - 트위터 포스팅에서 썸네일 등이 제대로 나타날 수 있도록 메타태그를 커스텀했습니다. 
 
