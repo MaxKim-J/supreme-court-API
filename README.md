@@ -1,6 +1,6 @@
 # 판례요지봇(precedent_bot)
 
-###  🤖🐧👩🏻‍⚖️
+### 🤖🐧👩🏻‍⚖️
 
 ![last](https://img.shields.io/github/last-commit/MaxKim-J/supreme-court-API) ![tweet](https://img.shields.io/twitter/follow/precedent_bot?label=%40precedent_bot&style=social)
 
@@ -46,7 +46,7 @@
 - [redux-saga](https://github.com/redux-saga/redux-saga)
 - SCSS
 
-## 📖  Key Note
+## 📖 Key Note
 
 ### 주요 기능
 
@@ -72,21 +72,27 @@
 
 - firebase functions로 서버리스 함수를 배포하고, GCP scheduler로 스케쥴링했습니다.
 - Headless 브라우저 puppeteer을 사용해 서버리스 크롤링 봇을 구현했습니다.
-- twitter developer API를 사용하여 백엔드에서 내용을 받아  트윗 봇을 구현했습니다.
+- twitter developer API를 사용하여 백엔드에서 내용을 받아 트윗 봇을 구현했습니다.
 - class 문법을 통해 각각의 서버리스 함수에 필요한 동작들과 자원들을 분리했습니다.
 
 #### 클라이언트
 
-- Create React App을 사용하여 빠르게 리액트 앱을 구축했습니다. 
-- React.lazy, suspense를 사용하여 코드 스플리팅을 구현했습니다. 
+- Create React App을 사용하여 빠르게 리액트 앱을 구축했습니다.
+- React.lazy, suspense를 사용하여 코드 스플리팅을 구현했습니다.
 - Redux를 이용해 상태관리를, Redux Saga를 사용해 비동기 로직을 쉽게 작성할 수 있도록 했습니다.
 - redux store를 이용한 fetchEntity 패턴을 도입해 비동기 로딩 컴포넌트를 작성했습니다.
 - vercel을 이용해 배포했습니다.
-- 트위터 포스팅에서 썸네일 등이 제대로 나타날 수 있도록 메타태그를 커스텀했습니다. 
+- 트위터 포스팅에서 썸네일 등이 제대로 나타날 수 있도록 메타태그를 커스텀했습니다.
 
 ### 앞으로 업데이트
 
 - DB에 있는 판례 정보들을 구조화된 pdf로 내보낼 수 있는 서버리스 함수 추가(판례 내용을 책으로 만들기 위해)
+- 번들링하기
+- 쉬운 배포를 위한 CI/CD 구성하기
+- docker 셋업하기
+- RDS로 DB이관하기
+- firebase에 있는 크롤러들 lambda로 이관하기
 
 ## 📈 데이터 출처
+
 [대한민국 법원 종합법률정보](https://glaw.scourt.go.kr/wsjo/intesrch/sjo022.do)
